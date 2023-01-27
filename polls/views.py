@@ -3,7 +3,36 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.views import generic
 
+# serialization
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import QuestionSerializer
+
 from .models import Question, Choice
+
+# serialization
+@api_view(['GET'])
+def get_questions(request):
+    """
+    Get list of questions on the site
+    """
+
+    questions = Question.objects.all()
+    serializer = QuestionSerializer(questions, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def update_question(request, pk):
+    """
+    Get the list of questions on website
+    """
+
+    questions = Question.object.get(id=pk)
+    serializer = QuestionSerializer(questions, data=request.data, partial=True)
+    if serializer.is_valid():
+        return Response(serializer.data)
+    return Response(status=400, data=serializer.errors)
+
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
