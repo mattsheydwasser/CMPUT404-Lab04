@@ -28,11 +28,11 @@ def update_question(request, pk):
     """
 
     questions = Question.objects.get(id=pk)
-    print(request.data)
     serializer = QuestionSerializer(questions, data=request.data, partial=True)
-    print(serializer.initial_data)
     if serializer.is_valid():
-        print(serializer.data)
+        
+        # was not working in serializer class so moved here, works now
+        serializer.save()
         return Response(serializer.data)
     return Response(status=400, data=serializer.errors)
 
