@@ -16,9 +16,11 @@ class QuestionSerializer(serializers.Serializer):
         """
         Update and return existing Question instance, given validated data
         """
-
+        
         instance.question_text = validated_data.get('question_text', instance.question_text)
         instance.pub_date = validated_data.get('pub_date', instance.pub_date)
-        instance.save()
-
+        
+        # not working, moved to views.py in update_question method
+        # instance.save()
+        
         return instance
